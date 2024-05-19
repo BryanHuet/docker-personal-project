@@ -1,0 +1,9 @@
+services:
+  simpleapp:
+    build: .
+    ports:
+      - 8000:8000
+      - 8765:8765
+    command: ["/var/script/startup.sh"]
+    volumes:
+      - ./html:/var/www/html
