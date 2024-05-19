@@ -23,3 +23,10 @@ DATABASE_NAME=my_db
 
 MYSQL_ROOT_PASSWORD=admin
 MARIADB_ROOT_PASSWORD=admin
+```
+## Usage
+
+1. Launch Docker Compose:
+    ```bash
+    docker compose up
+    ```

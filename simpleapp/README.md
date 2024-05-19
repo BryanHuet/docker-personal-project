@@ -29,7 +29,7 @@ Here is the basic structure of the project:
 
 1. Launch Docker Compose:
     ```bash
-    docker-compose up
+    docker compose up
     ```
 
 ## Accessing the Application
