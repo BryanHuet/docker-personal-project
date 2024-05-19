@@ -1,7 +1,4 @@
-Here's a README file for a Docker Compose project that sets up a CakePHP working environment:
-
-```markdown
-# CakePHP Docker Compose Project
+# CakePHP Docker Compose
 
 This project uses Docker Compose to set up a working environment for a CakePHP application. The setup includes services for the web server, PHP
 
