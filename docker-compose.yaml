@@ -1,0 +1,41 @@
+services:
+
+  eruditio:
+    image: eruditio
+    container_name: eruditio
+    volumes:
+      - ./eruditio/html:/var/www/html
+      - ./eruditio/apache/ports.conf:/etc/apache2/ports.conf
+      - ./eruditio/php/php.ini:/etc/php/8.2/apache2/php.ini
+      
+    networks:
+      eruditio_proxnet:
+        ipv4_address: 172.50.0.6
+
+  postgres:
+    image: postgres:alpine3.19
+    container_name: eruditio-postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    networks:
+      eruditio_proxnet:
+        ipv4_address: 172.50.0.2
+ 
+  haproxy:
+    image: haproxy
+    container_name: eruditio-haproxy
+    volumes:
+      - ./proxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      - 80:80
+    networks:
+      eruditio_proxnet:
+        ipv4_address: 172.50.0.5
+  
+networks:
+  eruditio_proxnet:
+    external: true
