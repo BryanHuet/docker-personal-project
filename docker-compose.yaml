@@ -7,7 +7,9 @@ services:
       - ./eruditio/html:/var/www/html
       - ./eruditio/apache/ports.conf:/etc/apache2/ports.conf
       - ./eruditio/php/php.ini:/etc/php/8.2/apache2/php.ini
-      
+      - ./eruditio/php/xdebug.ini:/etc/php/8.2/apache2/conf.d/xdebug.ini
+    ports:
+      - 9010:9009
     networks:
       eruditio_proxnet:
         ipv4_address: 172.50.0.6

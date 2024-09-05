@@ -21,6 +21,7 @@ RUN apt-get update && \
         php-mbstring \
         php-xml \
         php-curl \
+        php-xdebug \
         unzip \
         php-zip \
 		curl \
@@ -50,7 +51,7 @@ COPY eruditio/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.co
 RUN mkdir -p ${APACHE_RUN_DIR} ${APACHE_LOCK_DIR} ${APACHE_LOG_DIR}
 
 STOPSIGNAL SIGWINCH
-EXPOSE 8080
+EXPOSE 8080 9009
 
 WORKDIR /var/www/html
 

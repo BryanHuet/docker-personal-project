@@ -1,4 +1,3 @@
 <?php
 
-
-echo("HELLO");
+xdebug_info();
