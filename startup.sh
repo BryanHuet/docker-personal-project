@@ -5,7 +5,7 @@ cd proxy/
 docker build -t eruditio-haproxy .
 cd ..
 
-# Build Testing AI Docker image
+# Build Eruditio Docker image
 docker build -t eruditio .
 
 # Create network
