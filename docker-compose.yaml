@@ -7,26 +7,41 @@ services:
       - ./eruditio/html:/var/www/html
       - ./eruditio/apache/ports.conf:/etc/apache2/ports.conf
       - ./eruditio/php/php.ini:/etc/php/8.2/apache2/php.ini
+      - ./eruditio/apache/custom-apache.conf:/etc/apache2/sites-available/000-default.conf
+      - ./eruditio/apache/apache2.conf:/etc/apache2/apache2.conf
       - ./eruditio/php/xdebug.ini:/etc/php/8.2/apache2/conf.d/xdebug.ini
     ports:
       - 9010:9009
     networks:
+      eruditio_bdd:
       eruditio_proxnet:
         ipv4_address: 172.50.0.6
 
-  postgres:
-    image: postgres:alpine3.19
-    container_name: eruditio-postgres
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - POSTGRES_DB=${DATABASE_NAME}
+  mariadb:
+    image: mariadb:latest
+    container_name: eruditio-mariadb
     networks:
+      - eruditio_bdd
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - mariadb-volume:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: eruditio-phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      eruditio_bdd:
       eruditio_proxnet:
-        ipv4_address: 172.50.0.2
- 
+        ipv4_address: 172.50.0.7
+
   haproxy:
     image: haproxy
     container_name: eruditio-haproxy
@@ -34,10 +49,16 @@ services:
       - ./proxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     ports:
       - 80:80
+      - 8080:8080
     networks:
       eruditio_proxnet:
         ipv4_address: 172.50.0.5
   
 networks:
+  eruditio_bdd:
+    name: eruditio_bdd
   eruditio_proxnet:
     external: true
+    
+volumes:
+  mariadb-volume:
