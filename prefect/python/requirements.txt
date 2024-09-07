@@ -1,0 +1,5 @@
+mariadb 
+python-dotenv 
+pandas 
+bs4 
+lxml

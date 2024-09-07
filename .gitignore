@@ -51,3 +51,11 @@ eruditio/html/logs/
 
 # Ignore backup files
 eruditio/html/backups/
+
+# Ignore Prefect files
+prefect/src/__pycache__
+prefect/src/config/__pycache__
+prefect/src/flows/__pycache__
+prefect/src/models/__pycache__
+prefect/src/tasks/__pycache__
+prefect/src/config/.env

@@ -2,7 +2,12 @@
 
 # Build HAProxy Docker image
 cd proxy/
-docker build -t eruditio-haproxy .
+docker build -t haproxy .
+cd ..
+
+# Build Prefect Docker image
+cd prefect/
+docker build -t prefect .
 cd ..
 
 # Build Eruditio Docker image
