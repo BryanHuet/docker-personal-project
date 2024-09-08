@@ -1,17 +1,13 @@
 #!/bin/sh
 
 # Build HAProxy Docker image
-cd proxy/
-docker build -t haproxy .
-cd ..
+docker build -t haproxy proxy/.
 
 # Build Prefect Docker image
-cd prefect/
-docker build -t prefect .
-cd ..
+docker build -t prefect prefect/.
 
 # Build Eruditio Docker image
-docker build -t eruditio .
+docker build -t eruditio eruditio/.
 
 # Create network
 docker network create --driver bridge --subnet 172.50.0.0/16 eruditio_proxnet
