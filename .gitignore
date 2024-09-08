@@ -15,5 +15,6 @@
 *.env
 # Ignore html project
 eruditio/html/*
+eruditio/html/index.php
 # Ignore Prefect files
 prefect/src/*
