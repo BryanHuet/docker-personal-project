@@ -1,6 +1,7 @@
-# CakePHP App with HAProxy and PostgreSQL
+# Docker Project Template
 
-This project sets up a CakePHP application with HAProxy as a reverse proxy. The setup uses Docker for containerization and Docker Compose for orchestration. 
+
+This project sets up a CakePHP application, Prefect workflow, Mariadb Database and PhpMyAdmin interface with HAProxy as a reverse proxy. The setup uses Docker for containerization and Docker Compose for orchestration. 
 
 ## Prerequisites
 
@@ -17,7 +18,7 @@ git clone https://github.com/BryanHuet/docker-personal-project.git
 
 ### Step 2: Build Docker Images
 
-Run the `startup.sh` script to build the Docker images for the CakePHP app and HAProxy.
+Run the `startup.sh` script to build the Docker images and create network.
 
 ```sh
 chmod +x startup.sh
@@ -42,13 +43,16 @@ Add the following line:
 
 ```
 127.0.0.1 eruditio.local
+127.0.0.1 phpmyadmin.local
+127.0.0.1 prefect.local
 ```
 ### Step 5: Access the Application
 
-Once the containers are up and running, you can access the CakePHP application via your web browser.
+Once the containers are up and running, you can access applications via your web browser.
 
-- CakePHP App: `http://eruditio.local`
-- CakePHP Info: `http://eruditio.local/info` 
+- CakePHP App: `http://eruditio.local`  
+- Prefect: `http://prefect.local` 
+- PhpMyAdmin: `http://phpmyadmin.local`
 
 ## Scripts
 
@@ -58,16 +62,30 @@ Once the containers are up and running, you can access the CakePHP application v
 #!/bin/sh
 
 # Build HAProxy Docker image
-cd proxy/
-docker build -t eruditio-haproxy .
-cd ..
+docker build -t haproxy proxy/.
+
+# Build Prefect Docker image
+docker build -t prefect prefect/.
 
 # Build Eruditio Docker image
-docker build -t eruditio .
+docker build -t eruditio eruditio/.
 
 # Create network
 docker network create --driver bridge --subnet 172.50.0.0/16 eruditio_proxnet
+
 ```
+
+## Hosts
+You can edit host by editing the haproxy configuration file
+### `proxy/haproxy.cfg`\
+```
+frontend eruditio_front
+    bind *:80
+    ...
+    acl <name> hdr(host) -i <condition>
+    use_backend <backend_name> if <name>
+```
+Ensure that your backend exist.
 
 ## Troubleshooting
 
