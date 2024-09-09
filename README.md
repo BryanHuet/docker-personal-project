@@ -74,6 +74,11 @@ docker build -t eruditio eruditio/.
 docker network create --driver bridge --subnet 172.50.0.0/16 eruditio_proxnet
 
 ```
+## Prefect
+Prefect dashboard is accessible by `http://prefect.local`.
+
+To start using your workflow you need to add your code in prefect/src.
+
 
 ## Hosts
 You can edit host by editing the haproxy configuration file
@@ -85,7 +90,16 @@ frontend eruditio_front
     acl <name> hdr(host) -i <condition>
     use_backend <backend_name> if <name>
 ```
-Ensure that your backend exist.
+> Be sure that your backend exist.
+
+For exemple if you want to name your project myapp you can edit the host like:
+```
+frontend eruditio_front
+    bind *:80
+    ...
+    acl host_myapp hdr(host) -i myapp.local
+    use_backend eruditio_back  if host_myapp
+```
 
 ## Troubleshooting
 
